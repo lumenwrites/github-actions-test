@@ -1,9 +1,11 @@
 name: Zip and Release
 
 on:
+  workflow_dispatch:
+
   push:
     tags:
-      - '*'
+      - "*.*.*"
 
 jobs:
   build:
