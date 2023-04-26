@@ -2,9 +2,9 @@ name: Create a Release
 
 on:
   workflow_dispatch:
-  # push:
-  #   tags:
-  #     - "*.*.*"
+  push:
+    tags:
+      - "*.*.*"
   # push:
   #   branches:
   #     - main
