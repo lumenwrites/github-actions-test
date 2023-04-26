@@ -21,20 +21,24 @@ jobs:
         with:
           node-version: 18
 
-      # - name: Download and extract compiled script
-      #   run: |
-      #     wget https://github.com/lumenwrites/process-course/releases/download/v1.0.0/process-course-linux -O process-course # replace with the URL of your compiled script
-
-      #     chmod +x process-course
-
-      - name: Clone script repository
-        run: git clone https://github.com/lumenwrites/process-course
-
-      - name: Install dependencies and run the course processing script
-        working-directory: process-course
+      - name: Download and extract compiled script
         run: |
-          npm ci
-          npm run start
+          wget https://github.com/lumenwrites/process-course/releases/download/v1.0.0/process-course-linux -O process-course
+          chmod +x process-course
+  
+      - name: Run compiled script
+        run: |
+          ./process-course
+
+      # - name: Clone script repository
+      #   run: git clone https://github.com/lumenwrites/process-course
+
+      # - name: Install dependencies
+      #   working-directory: process-course
+      #   run: |
+      #     npm ci
+      #     npm run start
+      # - name: Run course processing script
 
       - name: Generate Changelog
         run: |
@@ -47,7 +51,7 @@ jobs:
           echo "$TAG_VERSION: $TAG_MESSAGE" >> $FILE
           echo "" >> $FILE
           ls releases/*.zip
-          
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
