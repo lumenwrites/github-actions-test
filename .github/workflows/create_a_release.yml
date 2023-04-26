@@ -30,11 +30,29 @@ jobs:
       - name: Clone script repository
         run: git clone https://github.com/lumenwrites/process-course
 
-      - name: Install dependencies and build the script
+      - name: Install dependencies and run the course processing script
         working-directory: process-course
         run: |
           npm ci
-
-      - name: Run compiled script
-        run: |
           npm run start
+
+      - name: Generate Changelog
+        run: |
+          export TAG_VERSION="${GITHUB_REF#refs/*/}"
+          export TAG_MESSAGE=$(git tag -l --format='%(contents:subject)' $TAG_VERSION)
+          export COMMIT_SHA="${{ github.sha }}"
+          export FILE="${{ github.workspace }}-CHANGELOG.txt"
+          echo "# Learn to Code for Godot" > $FILE
+          echo "commit: $COMMIT_SHA" >> $FILE
+          echo "$TAG_VERSION: $TAG_MESSAGE" >> $FILE
+          echo "" >> $FILE
+          ls releases/*.zip
+          
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          append_body: true
+          files: |
+            content-gdschool-releases/*.zip
+          body_path: ${{ github.workspace }}-CHANGELOG.txt
