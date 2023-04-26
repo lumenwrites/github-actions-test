@@ -50,7 +50,7 @@ jobs:
           echo "commit: $COMMIT_SHA" >> $FILE
           echo "$TAG_VERSION: $TAG_MESSAGE" >> $FILE
           echo "" >> $FILE
-          ls releases/*.zip
+          ls content-gdschool-releases/*.zip
 
       - name: Release
         uses: softprops/action-gh-release@v1
